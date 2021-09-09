@@ -28,13 +28,25 @@ private:
     ///Guarda o numero de linhas da peca
     int numLinhas;
 
+    //* Funcoes de uso privado da classe
+    //Funcao que cria uma peca vazia
+    void create();
+    //Funcao que destroi uma peca
+    void destroy();
+    //Fucao que destroi e depois cria uma peca 
+    void clear();
+
 public:
     //* Construtor e destrutor da classe
 
-    
     Peca();
+    //Construtor de copia
     Peca(const Peca &other);
     ~Peca();
+
+    //* Operadores
+
+    Peca &operator=(const Peca &other);
 
     //* Getters
 
@@ -44,7 +56,7 @@ public:
     const int getNumLinhas() const;
     /// Funcao que retorna o caracter em determinada posicao da peca
     const char getPecaChar(const int &coluna, const int &linha) const;
-    /// Funcao que printa a Peca 
+    /// Funcao que printa a Peca
     void printPeca() const;
     /// Funcao para setar as pecas
     void setPeca(const char pecaExemplo[4][4], const int &colunas, const int &linhas);
@@ -75,19 +87,36 @@ private:
     TipoPeca decodePeca(const char id) const;
     ///Funcao que ira criar o vetor de pecas
     void criaVetorPecas();
-
+    //Funcao que cria um vazio
+    void create();
+    //Funcao que destroi um Jogo
+    void destroy();
+    //Fucao que destroi e depois cria um Jogo 
+    void clear(); 
+    ///Fucao que verifica se podemos inserir a peca (retorna true se a peca pode ser inserida)
+    bool verificaInsercao(const Peca &peca, const int &coluna, const int &linha);
+    ///Funcao que verifica se a peca nao ultrapassa os limites do jogo (retorna true se a peca ultrapassa limites)
+    bool ultrapassaLimites(const Peca &peca, const int &coluna, const int &linha); 
+    //Funcao que verifica se a peca nao intercepta outras pecas (retorna true se a peca intecepta outras pecas)
+    bool interceptaPecas(const Peca &peca, const int &coluna, const int &linha); 
 public:
     //* Construtor e Destrutor da Classe
     /// Consturtor que aloca dinamicamente a matriz com base no numero de colunas, ele tambem inicializa todos os valores
     Tetris(const int &numeroDeColunas);
+    ///Construtor default da classe Tetris
+    Tetris(); 
+    ///Construtor de Copia
+    Tetris(const Tetris &other); 
     ~Tetris();
+
+    //* Operadores
+    Tetris &operator=(const Tetris &other);
 
     //*Funcoes para Facilitar o desenvolvimento do Programa
     //Funcao que imprime o estado atual do jogo
     void printMatrix() const;
     /// Funcao que imprime todo o vetor de pecas
     void printVetorPecas() const;
-
 
     //* Fucoes de uso do programa
 

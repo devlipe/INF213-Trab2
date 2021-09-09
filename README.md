@@ -13,7 +13,6 @@
 <ul>
 <li><a href = "https://www.cplusplus.com/reference">C Plus Plus</a></li>
 <li><a href = "https://stackoverflow.com/">Stack Overflow</a></li>
-<li><a href = "https://en.cppreference.com">CPP Reference</a></li>
 <li>Salles Viana</li>
 <li>Minha Sapiência</li>
 
