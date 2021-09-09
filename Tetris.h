@@ -7,6 +7,7 @@
 #include <iomanip>
 #include <iostream>
 
+/// Enumerado de tipos de pecas, ele pemite que encontremos a peca no vetor de pecas de forma mais rapida
 enum TipoPeca
 {
     TipoI = 0,
@@ -33,7 +34,7 @@ private:
     void create();
     //Funcao que destroi uma peca
     void destroy();
-    //Fucao que destroi e depois cria uma peca 
+    //Fucao que destroi e depois cria uma peca
     void clear();
 
 public:
@@ -91,22 +92,29 @@ private:
     void create();
     //Funcao que destroi um Jogo
     void destroy();
-    //Fucao que destroi e depois cria um Jogo 
-    void clear(); 
+    //Fucao que destroi e depois cria um Jogo
+    void clear();
     ///Fucao que verifica se podemos inserir a peca (retorna true se a peca pode ser inserida)
     bool verificaInsercao(const Peca &peca, const int &coluna, const int &linha);
     ///Funcao que verifica se a peca nao ultrapassa os limites do jogo (retorna true se a peca ultrapassa limites)
-    bool ultrapassaLimites(const Peca &peca, const int &coluna, const int &linha); 
+    bool ultrapassaLimites(const Peca &peca, const int &coluna, const int &linha);
     //Funcao que verifica se a peca nao intercepta outras pecas (retorna true se a peca intecepta outras pecas)
-    bool interceptaPecas(const Peca &peca, const int &coluna, const int &linha); 
+    bool interceptaPecas(const Peca &peca, const int &coluna, const int &linha);
+    /// Fucao que insere uma peca em determinada posicao
+    void inserePeca(const Peca &peca, const int &coluna, const int &linha);
+    /// Fuacao que faz o resizes nas colunas para permitir que novas pecas sejam colocadas no tabuleiro
+    void resizeColuna(const int &indiceColuna, const int &novaAltura);
+    ///Funcao que ira remover os espacos brancos inuteis das coluas 
+    void removeEspacos();
+
 public:
     //* Construtor e Destrutor da Classe
     /// Consturtor que aloca dinamicamente a matriz com base no numero de colunas, ele tambem inicializa todos os valores
     Tetris(const int &numeroDeColunas);
     ///Construtor default da classe Tetris
-    Tetris(); 
+    Tetris();
     ///Construtor de Copia
-    Tetris(const Tetris &other); 
+    Tetris(const Tetris &other);
     ~Tetris();
 
     //* Operadores

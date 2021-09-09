@@ -95,7 +95,7 @@ Tetris &Tetris::operator=(const Tetris &other)
     }
     for (int colunas = 0; colunas < other.numColunas; colunas++)
     {
-        for (int linhas = 0; linhas < other.alturas[linhas]; linhas++)
+        for (int linhas = 0; linhas < other.alturas[colunas]; linhas++)
         {
             jogo[colunas][linhas] = other.jogo[colunas][linhas];
         }
@@ -242,7 +242,7 @@ void Tetris::criaVetorPecas()
 
 const char Tetris::get(const int &coluna, const int &linha) const
 {
-    if (coluna <= numColunas && linha < alturas[coluna])
+    if (coluna < numColunas && linha < alturas[coluna])
     {
         return jogo[coluna][linha];
     }
@@ -286,6 +286,8 @@ void Tetris::printMatrix() const
     std::cout << "Numero de colunas: " << numColunas << std::endl;
     std::cout << "Maior Altura: " << maiorAltura << std::endl;
 
+    std::cout << "   ";
+
     for (int i = 0; i <= maiorAltura; i++)
     {
         std::cout << std::setw(3) << i - 1;
@@ -294,7 +296,7 @@ void Tetris::printMatrix() const
 
     for (int i = 0; i < numColunas; i++)
     {
-        std::cout << std::setw(3) << i;
+        std::cout << std::setw(3) << alturas[i] << std::setw(3) << i;
         for (int j = 0; j < alturas[i]; j++)
         {
             std::cout << std::setw(3) << jogo[i][j];
@@ -338,7 +340,7 @@ unsigned int Tetris::getMenorAltura() const
     unsigned int menorAltura = alturas[0];
 
     //Descobre a menor coluna, precisamos checar ate o limite superior dela
-    for (int i = 0; i < numColunas; i++)
+    for (int i = 1; i < numColunas; i++)
     {
         if (alturas[i] < menorAltura)
         {
@@ -354,13 +356,11 @@ void Tetris::removeElemento(const int &posRemover, const int &indiceColuna)
     int indice = 0;
     for (int i = 0; i < alturas[indiceColuna]; i++)
     {
-        if (posRemover == i)
+        if (posRemover != i)
         {
-            break;
+            colunaAuxiliar[indice] = jogo[indiceColuna][i];
+            indice++;
         }
-
-        colunaAuxiliar[indice] = jogo[indiceColuna][i];
-        indice++;
     }
 
     char *arrayDel = jogo[indiceColuna];
@@ -374,17 +374,24 @@ void Tetris::removeLinha(const int &linhaARemover)
     for (int i = 0; i < numColunas; i++)
     {
         removeElemento(linhaARemover, i);
-        // for (int j = alturas[i] - 1; j > 0; j--)
-        // {
-        //     if (jogo[i][j] == ' ')
-        //     {
-        //         removeElemento(j, i);
-        //     }
-        //     else
-        //     {
-        //         break;
-        //     }
-        // }
+    }
+}
+
+void Tetris::removeEspacos()
+{
+    for (int col = 0; col < numColunas; col++)
+    {
+        for (int lin = alturas[col] - 1; lin >= 0; lin--)
+        {
+            if (jogo[col][lin] == ' ')
+            {
+                removeElemento(lin, col);
+            }
+            else
+            {
+                break;
+            }
+        }
     }
 }
 
@@ -410,6 +417,7 @@ void Tetris::removeLinhasCompletas()
             removeLinha(linha);
         }
     }
+    removeEspacos();
 }
 
 const int Tetris::getNumColunas() const
@@ -454,7 +462,7 @@ TipoPeca Tetris::decodePeca(const char id) const
         break;
 
     default:
-        throw "Tipo de pessa invalido";
+        throw "Tipo de peca invalido";
         break;
     }
 }
@@ -484,13 +492,12 @@ bool Tetris::interceptaPecas(const Peca &peca, const int &coluna, const int &lin
         {
             if (lin < alturas[col])
             {
-                if (peca.getPecaChar(col, lin) != ' ')
+                if (peca.getPecaChar(col - coluna, linha - lin) != ' ')
                 {
                     if (jogo[col][lin] != ' ')
                     {
                         return true; // retornamos true por a peca intercepta uma peca ja no tabuleiro
                     }
-                    
                 }
             }
         }
@@ -498,7 +505,7 @@ bool Tetris::interceptaPecas(const Peca &peca, const int &coluna, const int &lin
     return false;
 }
 
-bool Tetris::verificaInsercao(const Peca &peca, const int &coluna, const int &linha) 
+bool Tetris::verificaInsercao(const Peca &peca, const int &coluna, const int &linha)
 {
     if (ultrapassaLimites(peca, coluna, linha))
     {
@@ -511,6 +518,44 @@ bool Tetris::verificaInsercao(const Peca &peca, const int &coluna, const int &li
     return true;
 }
 
+void Tetris::inserePeca(const Peca &peca, const int &coluna, const int &linha)
+{
+    for (int lin = linha; lin > linha - peca.getNumLinhas(); lin--)
+    {
+        for (int col = coluna; col < coluna + peca.getNumColunas(); col++)
+        {
+            if (peca.getPecaChar(col - coluna, linha - lin) != ' ')
+            {
+                if (lin >= alturas[col])
+                {
+                    resizeColuna(col, lin + 1);
+                }
+                jogo[col][lin] = peca.getPecaChar(col - coluna, linha - lin);
+            }
+        }
+    }
+}
+
+void Tetris::resizeColuna(const int &indiceColuna, const int &novaAltura)
+{
+    char *colunaAuxiliar = new char[novaAltura];
+    int velhaAltura = alturas[indiceColuna];
+    alturas[indiceColuna] = novaAltura;
+
+    for (int i = 0; i < velhaAltura; i++)
+    {
+        colunaAuxiliar[i] = jogo[indiceColuna][i];
+    }
+    for (int i = velhaAltura; i < novaAltura; i++)
+    {
+        colunaAuxiliar[i] = ' ';
+    }
+
+    char *arrayDel = jogo[indiceColuna];
+    jogo[indiceColuna] = colunaAuxiliar;
+    delete[] arrayDel;
+}
+
 bool Tetris::adicionaForma(const int coluna, const int linha, const char id, const int rotacao)
 {
     TipoPeca tipoPeca = decodePeca(id);
@@ -519,11 +564,12 @@ bool Tetris::adicionaForma(const int coluna, const int linha, const char id, con
 
     if (verificaInsercao(pecaInserir, coluna, linha))
     {
-        std::cout << "\nPeca Inserida com sucesso\n";
-        pecaInserir.printPeca();
+        inserePeca(pecaInserir, coluna, linha);
+
+        return true;
     }
 
-    return true;
+    return false;
 }
 
 const int Peca::getNumColunas() const

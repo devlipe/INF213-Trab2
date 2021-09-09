@@ -1,4 +1,4 @@
-# INF213-Trab1
+# INF213-Trab2
 
 <p>Eu li as regras</p>
 
@@ -17,9 +17,3 @@
 <li>Minha Sapiência</li>
 
 </ul>
-
-</br>
-</br>
-
-<h2>Descricao do Trabalho</h2>
-<p></p>
