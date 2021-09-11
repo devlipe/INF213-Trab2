@@ -106,6 +106,8 @@ private:
     void resizeColuna(const int &indiceColuna, const int &novaAltura);
     ///Funcao que ira remover os espacos brancos inuteis das coluas 
     void removeEspacos();
+    ///Funcao que remove um elemento do vetor de alturas
+    void removeAltura(const int &posAltura);
 
 public:
     //* Construtor e Destrutor da Classe

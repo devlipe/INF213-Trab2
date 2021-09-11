@@ -249,6 +249,24 @@ const char Tetris::get(const int &coluna, const int &linha) const
     return ' ';
 }
 
+void Tetris::removeAltura(const int &posAltura)
+{
+    int *alturasAux = new int[numColunas - 1];
+    int indice = 0;
+    for (int i = 0; i < numColunas; i++)
+    {
+        if (i != posAltura)
+        {
+            alturasAux[indice] = alturas[i];
+            indice++;
+        }
+    }
+
+    int *arrayDel = alturas;
+    alturas = alturasAux;
+    delete[] arrayDel;
+}
+
 void Tetris::removeColuna(const int &numColuna)
 {
     if (numColuna > numColunas || numColuna < 0)
@@ -260,6 +278,7 @@ void Tetris::removeColuna(const int &numColuna)
     {
         jogo[i] = jogo[i + 1];
     }
+    removeAltura(numColuna);
     delete[] colunaMarcada;
     numColunas--;
 }

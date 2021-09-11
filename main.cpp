@@ -30,8 +30,11 @@ int main(int argc, char const *argv[])
     std::cout << a.adicionaForma(1, 5, 'I', 0);
     a.printMatrix();
     std::cout << a.adicionaForma(2, 5, 'I', 0);
-    std::cout << a.adicionaForma(3, 5, 'I', 0);
+    a.removeColuna(2);
+
     a.printMatrix();
+
+   
 
     b = a;
     b.printMatrix();
