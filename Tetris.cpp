@@ -575,7 +575,7 @@ void Tetris::resizeColuna(const int &indiceColuna, const int &novaAltura)
     delete[] arrayDel;
 }
 
-bool Tetris::adicionaForma(const int coluna, const int linha, const char id, const int rotacao)
+bool Tetris::adicionaForma(const int &coluna, const int &linha, const char &id, const int &rotacao)
 {
     TipoPeca tipoPeca = decodePeca(id);
 

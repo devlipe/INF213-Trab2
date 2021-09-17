@@ -76,6 +76,7 @@ private:
     Peca pecas[28];
 
     //* Funcoes de uso privado da classe
+    
     ///Retornar a menor altura das colunas
     unsigned int getMenorAltura() const;
     ///Retorna a maior altura das colunas
@@ -111,6 +112,7 @@ private:
 
 public:
     //* Construtor e Destrutor da Classe
+
     /// Consturtor que aloca dinamicamente a matriz com base no numero de colunas, ele tambem inicializa todos os valores
     Tetris(const int &numeroDeColunas);
     ///Construtor default da classe Tetris
@@ -120,9 +122,11 @@ public:
     ~Tetris();
 
     //* Operadores
+
     Tetris &operator=(const Tetris &other);
 
     //*Funcoes para Facilitar o desenvolvimento do Programa
+
     //Funcao que imprime o estado atual do jogo
     void printMatrix() const;
     /// Funcao que imprime todo o vetor de pecas
@@ -143,5 +147,5 @@ public:
     /// Funcao que retornar a altura maxima do jogo
     unsigned int getAltura() const;
     ///Funcao que tenta adicionar as pessas na tela atual, retorna false caso nao seja possivel colocar
-    bool adicionaForma(const int coluna, const int linha, const char id, const int rotacao);
+    bool adicionaForma(const int &coluna, const int &linha, const char &id, const int &rotacao);
 };
